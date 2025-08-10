@@ -14,6 +14,18 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'midnight-green': '#004C54',
+                        'silver': '#A5ACAF',
+                    }
+                }
+            }
+        }
+    </script>
     
     <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -27,7 +39,8 @@
     
     <style>
         :root {
-            --gold: #D4AF37;
+            --midnight-green: #004C54;
+            --silver: #A5ACAF;
             --black: #0A0A0A;
             --dark-gray: #1A1A1A;
             --light-gray: #F5F5F5;
@@ -65,7 +78,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--gold);
+            background: var(--midnight-green);
             border-radius: 5px;
         }
 
@@ -119,7 +132,7 @@
 
         .service-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 76, 84, 0.3);
         }
 
         /* Booking Calendar Styles */
@@ -128,14 +141,14 @@
         }
 
         .calendar-day:hover:not(.disabled) {
-            background: var(--gold);
-            color: #000;
+            background: var(--midnight-green);
+            color: #fff;
             transform: scale(1.1);
         }
 
         .calendar-day.selected {
-            background: var(--gold);
-            color: #000;
+            background: var(--midnight-green);
+            color: #fff;
         }
 
         .calendar-day.disabled {
@@ -150,14 +163,14 @@
         }
 
         .time-slot:hover:not(.booked) {
-            border-color: var(--gold);
+            border-color: var(--midnight-green);
             transform: scale(1.05);
         }
 
         .time-slot.selected {
-            background: var(--gold);
-            color: #000;
-            border-color: var(--gold);
+            background: var(--midnight-green);
+            color: #fff;
+            border-color: var(--midnight-green);
         }
 
         .time-slot.booked {
@@ -177,6 +190,14 @@
             z-index: 10;
         }
 
+        .gallery-item img {
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
         /* Barber Profile Card */
         .barber-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
@@ -185,7 +206,7 @@
 
         .barber-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 76, 84, 0.2);
         }
 
         /* Mobile Menu */
@@ -240,13 +261,36 @@
                 column-count: 1;
             }
         }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--midnight-green);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        #back-to-top.show {
+            display: flex;
+        }
     </style>
 </head>
 <body>
+    <link rel="icon" href="https://i.ibb.co/jT3gS2v/favicon.png" type="image/png">
     <!-- Loader -->
     <div class="loader" id="loader">
         <div class="scissors-loader">
-            <i class="fas fa-scissors text-5xl text-yellow-500"></i>
+            <i class="fas fa-feather-alt text-5xl text-midnight-green"></i>
         </div>
     </div>
 
@@ -255,20 +299,20 @@
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <i class="fas fa-scissors text-yellow-500 text-2xl"></i>
+                    <i class="fas fa-scissors text-midnight-green text-2xl"></i>
                     <span class="font-bebas text-2xl text-white">SHEAR MAGIC</span>
                 </div>
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link text-white hover:text-yellow-500 transition">Home</a>
-                    <a href="#services" class="nav-link text-white hover:text-yellow-500 transition">Services</a>
-                    <a href="#booking" class="nav-link text-white hover:text-yellow-500 transition">Book</a>
-                    <a href="#gallery" class="nav-link text-white hover:text-yellow-500 transition">Gallery</a>
-                    <a href="#barbers" class="nav-link text-white hover:text-yellow-500 transition">Barbers</a>
-                    <a href="#reviews" class="nav-link text-white hover:text-yellow-500 transition">Reviews</a>
-                    <a href="#contact" class="nav-link text-white hover:text-yellow-500 transition">Contact</a>
-                    <button onclick="scrollToBooking()" class="bg-yellow-500 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition">
+                    <a href="#home" class="nav-link text-white hover:text-midnight-green transition">Home</a>
+                    <a href="#services" class="nav-link text-white hover:text-midnight-green transition">Services</a>
+                    <a href="#booking" class="nav-link text-white hover:text-midnight-green transition">Book</a>
+                    <a href="#gallery" class="nav-link text-white hover:text-midnight-green transition">Gallery</a>
+                    <a href="#barbers" class="nav-link text-white hover:text-midnight-green transition">Barbers</a>
+                    <a href="#reviews" class="nav-link text-white hover:text-midnight-green transition">Reviews</a>
+                    <a href="#contact" class="nav-link text-white hover:text-midnight-green transition">Contact</a>
+                    <button onclick="scrollToBooking()" class="bg-midnight-green text-white px-6 py-2 rounded-full font-semibold hover:bg-silver hover:text-black transition">
                         Book Now
                     </button>
                 </div>
@@ -287,13 +331,13 @@
             <i class="fas fa-times text-2xl"></i>
         </button>
         <div class="mt-16 space-y-6">
-            <a href="#home" class="block text-white text-xl hover:text-yellow-500">Home</a>
-            <a href="#services" class="block text-white text-xl hover:text-yellow-500">Services</a>
-            <a href="#booking" class="block text-white text-xl hover:text-yellow-500">Book</a>
-            <a href="#gallery" class="block text-white text-xl hover:text-yellow-500">Gallery</a>
-            <a href="#barbers" class="block text-white text-xl hover:text-yellow-500">Barbers</a>
-            <a href="#reviews" class="block text-white text-xl hover:text-yellow-500">Reviews</a>
-            <a href="#contact" class="block text-white text-xl hover:text-yellow-500">Contact</a>
+            <a href="#home" class="block text-white text-xl hover:text-midnight-green">Home</a>
+            <a href="#services" class="block text-white text-xl hover:text-midnight-green">Services</a>
+            <a href="#booking" class="block text-white text-xl hover:text-midnight-green">Book</a>
+            <a href="#gallery" class="block text-white text-xl hover:text-midnight-green">Gallery</a>
+            <a href="#barbers" class="block text-white text-xl hover:text-midnight-green">Barbers</a>
+            <a href="#reviews" class="block text-white text-xl hover:text-midnight-green">Reviews</a>
+            <a href="#contact" class="block text-white text-xl hover:text-midnight-green">Contact</a>
         </div>
     </div>
 
@@ -310,14 +354,14 @@
             <h1 class="font-bebas text-6xl md:text-8xl text-white mb-4 hero-title">
                 SHEAR MAGIC
             </h1>
-            <p class="text-xl md:text-2xl text-yellow-500 mb-2 hero-subtitle">
+            <p class="text-xl md:text-2xl text-midnight-green mb-2 hero-subtitle">
                 Precision Cuts • Timeless Style
             </p>
-            <p class="text-lg text-gray-300 mb-8 hero-tagline">
+            <p class="text-lg text-silver mb-8 hero-tagline">
                 Johnstown's premier barbershop — family-operated with pride
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="scrollToBooking()" class="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-400 transition transform hover:scale-105">
+                <button onclick="scrollToBooking()" class="bg-midnight-green text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-silver hover:text-black transition transform hover:scale-105">
                     Book Now
                 </button>
                 <a href="tel:8145355110" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-black transition transform hover:scale-105">
@@ -326,7 +370,7 @@
             </div>
             <div class="mt-8 bg-black/50 backdrop-blur-sm rounded-full px-6 py-3 inline-block">
                 <p class="text-white">
-                    <i class="fas fa-map-marker-alt text-yellow-500 mr-2"></i>
+                    <i class="fas fa-map-marker-alt text-midnight-green mr-2"></i>
                     225 Market St • Tue–Sun 10:00 AM–5:00 PM ET
                 </p>
             </div>
@@ -343,86 +387,86 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">OUR SERVICES</h2>
-                <p class="text-gray-400 text-lg">Premium grooming services tailored to your style</p>
+                <p class="text-silver text-lg">Premium grooming services tailored to your style</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Service Cards -->
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-cut"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Men's Cut</h3>
-                    <p class="text-gray-400 mb-4">Classic and modern styles</p>
-                    <p class="text-2xl font-bold text-yellow-500">$25</p>
+                    <p class="text-silver mb-4">Classic and modern styles</p>
+                    <p class="text-2xl font-bold text-midnight-green">$25</p>
                 </div>
 
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-magic"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Fade</h3>
-                    <p class="text-gray-400 mb-4">Low, Mid, High, or Skin</p>
-                    <p class="text-2xl font-bold text-yellow-500">$30</p>
+                    <p class="text-silver mb-4">Low, Mid, High, or Skin</p>
+                    <p class="text-2xl font-bold text-midnight-green">$30</p>
                 </div>
 
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-spa"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Beard Trim</h3>
-                    <p class="text-gray-400 mb-4">Shape and style</p>
-                    <p class="text-2xl font-bold text-yellow-500">$20</p>
+                    <p class="text-silver mb-4">Shape and style</p>
+                    <p class="text-2xl font-bold text-midnight-green">$20</p>
                 </div>
 
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-fire"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Hot Towel Shave</h3>
-                    <p class="text-gray-400 mb-4">Traditional luxury shave</p>
-                    <p class="text-2xl font-bold text-yellow-500">$35</p>
+                    <p class="text-silver mb-4">Traditional luxury shave</p>
+                    <p class="text-2xl font-bold text-midnight-green">$35</p>
                 </div>
 
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-child"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Kids' Cut</h3>
-                    <p class="text-gray-400 mb-4">For our younger clients</p>
-                    <p class="text-2xl font-bold text-yellow-500">$18</p>
+                    <p class="text-silver mb-4">For our younger clients</p>
+                    <p class="text-2xl font-bold text-midnight-green">$18</p>
                 </div>
 
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-paint-brush"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Designs</h3>
-                    <p class="text-gray-400 mb-4">Custom hair art</p>
-                    <p class="text-2xl font-bold text-yellow-500">$15+</p>
+                    <p class="text-silver mb-4">Custom hair art</p>
+                    <p class="text-2xl font-bold text-midnight-green">$15+</p>
                 </div>
 
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-user-tie"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Senior Cuts</h3>
-                    <p class="text-gray-400 mb-4">Special senior pricing</p>
-                    <p class="text-2xl font-bold text-yellow-500">$15</p>
+                    <p class="text-silver mb-4">Special senior pricing</p>
+                    <p class="text-2xl font-bold text-midnight-green">$15</p>
                 </div>
 
                 <div class="service-card rounded-lg p-6 text-center">
-                    <div class="text-4xl text-yellow-500 mb-4">
+                    <div class="text-4xl text-midnight-green mb-4">
                         <i class="fas fa-shower"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Wash & Style</h3>
-                    <p class="text-gray-400 mb-4">Complete hair treatment</p>
-                    <p class="text-2xl font-bold text-yellow-500">$40</p>
+                    <p class="text-silver mb-4">Complete hair treatment</p>
+                    <p class="text-2xl font-bold text-midnight-green">$40</p>
                 </div>
             </div>
 
             <div class="text-center mt-10">
-                <button onclick="scrollToBooking()" class="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-400 transition transform hover:scale-105">
+                <button onclick="scrollToBooking()" class="bg-midnight-green text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-silver hover:text-black transition transform hover:scale-105">
                     Book Your Style Now
                 </button>
             </div>
@@ -434,7 +478,7 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">BOOK YOUR APPOINTMENT</h2>
-                <p class="text-gray-400 text-lg">Select your service, barber, and preferred time</p>
+                <p class="text-silver text-lg">Select your service, barber, and preferred time</p>
             </div>
 
             <div class="max-w-4xl mx-auto bg-gray-900 rounded-2xl p-8">
@@ -443,7 +487,7 @@
                     <!-- Service Selection -->
                     <div>
                         <label class="block text-white mb-2 font-semibold">Select Service</label>
-                        <select id="service-select" class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        <select id="service-select" class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-midnight-green">
                             <option value="">Choose a service...</option>
                             <option value="mens-cut">Men's Cut - $25</option>
                             <option value="fade">Fade - $30</option>
@@ -460,10 +504,10 @@
                     <div>
                         <label class="block text-white mb-2 font-semibold">Select Barber</label>
                         <div class="grid grid-cols-2 gap-4">
-                            <button type="button" class="barber-select bg-gray-800 text-white px-4 py-3 rounded-lg hover:bg-yellow-500 hover:text-black transition" data-barber="calvin">
+                            <button type="button" class="barber-select bg-gray-800 text-white px-4 py-3 rounded-lg hover:bg-midnight-green hover:text-white transition" data-barber="calvin">
                                 Calvin Berkins
                             </button>
-                            <button type="button" class="barber-select bg-gray-800 text-white px-4 py-3 rounded-lg hover:bg-yellow-500 hover:text-black transition" data-barber="darrian">
+                            <button type="button" class="barber-select bg-gray-800 text-white px-4 py-3 rounded-lg hover:bg-midnight-green hover:text-white transition" data-barber="darrian">
                                 Darrian Berkins
                             </button>
                         </div>
@@ -472,43 +516,46 @@
                     <!-- Date Selection -->
                     <div>
                         <label class="block text-white mb-2 font-semibold">Select Date</label>
-                        <input type="date" id="date-select" class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        <input type="date" id="date-select" class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-midnight-green">
                     </div>
 
                     <!-- Time Selection -->
                     <div>
                         <label class="block text-white mb-2 font-semibold">Select Time</label>
                         <div class="grid grid-cols-4 gap-2">
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">10:00 AM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">10:30 AM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">11:00 AM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">11:30 AM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">12:00 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">12:30 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">1:00 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">1:30 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">2:00 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">2:30 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">3:00 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">3:30 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">4:00 PM</button>
-                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">4:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">10:00 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">10:30 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">11:00 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">11:30 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">12:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">12:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">1:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">1:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">2:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">2:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">3:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">3:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">4:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-midnight-green hover:text-white">4:30 PM</button>
                         </div>
                     </div>
 
                     <!-- Contact Information -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" placeholder="First Name" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                        <input type="text" placeholder="Last Name" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                        <input type="email" placeholder="Email" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
-                        <input type="tel" placeholder="Phone" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                        <input type="text" placeholder="First Name" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-midnight-green" required>
+                        <input type="text" placeholder="Last Name" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-midnight-green" required>
+                        <input type="email" placeholder="Email" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-midnight-green" required>
+                        <input type="tel" placeholder="Phone" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-midnight-green" required>
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="w-full bg-yellow-500 text-black py-4 rounded-lg font-bold text-lg hover:bg-yellow-400 transition transform hover:scale-105">
+                    <button type="submit" class="w-full bg-midnight-green text-white py-4 rounded-lg font-bold text-lg hover:bg-silver hover:text-black transition transform hover:scale-105">
                         Confirm Booking
                     </button>
                 </form>
+                <div id="booking-confirmation" class="hidden mt-4 text-center bg-green-500/20 text-green-300 p-4 rounded-lg">
+                    <p>Thank you! Your appointment has been successfully booked.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -518,10 +565,25 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">OUR WORK</h2>
-                <p class="text-gray-400 text-lg">Check out our latest cuts and styles</p>
+                <p class="text-silver text-lg">Check out our latest cuts and styles</p>
             </div>
 
-            <div class="masonry-grid">
+            <!-- Mobile Carousel -->
+            <div id="mobile-gallery-carousel" class="md:hidden relative w-full max-w-lg mx-auto">
+                <div class="overflow-hidden rounded-lg">
+                    <div id="carousel-inner" class="flex transition-transform duration-300 ease-in-out">
+                        <!-- Images will be dynamically inserted here by JS -->
+                    </div>
+                </div>
+                <button id="prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full focus:outline-none">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full focus:outline-none">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="masonry-grid hidden md:block">
                 <!-- Gallery Items -->
                 <div class="gallery-item">
                     <img src="https://i.ibb.co/9CnW3Mm/59634476-2283314805089352-2485392605194485760-n.jpg" alt="Haircut 1" class="w-full rounded-lg">
@@ -574,23 +636,23 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">MEET YOUR BARBERS</h2>
-                <p class="text-gray-400 text-lg">Skilled professionals dedicated to your style</p>
+                <p class="text-silver text-lg">Skilled professionals dedicated to your style</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <!-- Calvin Berkins -->
                 <div class="barber-card rounded-lg overflow-hidden">
                     <img src="https://i.ibb.co/1tCHNHp3/482249153-9566035180150575-8168813732127006603-n.jpg" alt="Calvin Berkins" class="w-full h-80 object-cover">
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-white mb-2">Calvin Berkins</h3>
-                        <p class="text-yellow-500 mb-4">Co-Owner & Master Barber</p>
-                        <p class="text-gray-400 mb-4">With over 15 years of experience, Calvin specializes in precision fades, classic cuts, and intricate designs. His attention to detail and warm personality keep clients coming back.</p>
-                        <div class="flex items-center space-x-4 text-gray-300">
-                            <span><i class="fas fa-award text-yellow-500 mr-1"></i> 15+ Years</span>
-                            <span><i class="fas fa-star text-yellow-500 mr-1"></i> Fades & Designs</span>
+                        <p class="text-midnight-green mb-4">Co-Owner & Master Barber</p>
+                        <p class="text-silver mb-4">With over 15 years of experience, Calvin specializes in precision fades, classic cuts, and intricate designs. His attention to detail and warm personality keep clients coming back.</p>
+                        <div class="flex items-center space-x-4 text-silver">
+                            <span><i class="fas fa-award text-midnight-green mr-1"></i> 15+ Years</span>
+                            <span><i class="fas fa-star text-midnight-green mr-1"></i> Fades & Designs</span>
                         </div>
                         <div class="mt-4">
-                            <a href="mailto:Calvin.Berkins@yahoo.com" class="text-yellow-500 hover:underline"><i class="fas fa-envelope mr-2"></i>Calvin.Berkins@yahoo.com</a>
+                            <a href="mailto:Calvin.Berkins@yahoo.com" class="text-midnight-green hover:underline"><i class="fas fa-envelope mr-2"></i>Calvin.Berkins@yahoo.com</a>
                         </div>
                     </div>
                 </div>
@@ -600,11 +662,11 @@
                     <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop" alt="Darrian Berkins" class="w-full h-80 object-cover">
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-white mb-2">Darrian Berkins</h3>
-                        <p class="text-yellow-500 mb-4">Co-Owner & Master Barber</p>
-                        <p class="text-gray-400 mb-4">Darrian brings modern techniques and creative flair to every cut. Specializing in contemporary styles and beard grooming, he ensures every client leaves looking their best.</p>
-                        <div class="flex items-center space-x-4 text-gray-300">
-                            <span><i class="fas fa-award text-yellow-500 mr-1"></i> 10+ Years</span>
-                            <span><i class="fas fa-star text-yellow-500 mr-1"></i> Modern Styles</span>
+                        <p class="text-midnight-green mb-4">Co-Owner & Master Barber</p>
+                        <p class="text-silver mb-4">Darrian brings modern techniques and creative flair to every cut. Specializing in contemporary styles and beard grooming, he ensures every client leaves looking their best.</p>
+                        <div class="flex items-center space-x-4 text-silver">
+                            <span><i class="fas fa-award text-midnight-green mr-1"></i> 10+ Years</span>
+                            <span><i class="fas fa-star text-midnight-green mr-1"></i> Modern Styles</span>
                         </div>
                     </div>
                 </div>
@@ -617,7 +679,7 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">WHAT OUR CLIENTS SAY</h2>
-                <p class="text-gray-400 text-lg">Real words from satisfied customers</p>
+                <p class="text-silver text-lg">Real words from satisfied customers</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Review Card 1 -->
@@ -626,12 +688,12 @@
                         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client 1" class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="text-white font-bold">James T.</h4>
-                            <div class="text-yellow-500">
+                            <div class="text-midnight-green">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-400">"Best haircut I've had in years. Calvin is a true artist. The shop is clean, the vibe is great, and the service is top-notch. Highly recommend!"</p>
+                    <p class="text-silver">"Best haircut I've had in years. Calvin is a true artist. The shop is clean, the vibe is great, and the service is top-notch. Highly recommend!"</p>
                 </div>
                 <!-- Review Card 2 -->
                 <div class="bg-gray-800 p-6 rounded-lg">
@@ -639,12 +701,12 @@
                         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client 2" class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="text-white font-bold">Sarah L.</h4>
-                            <div class="text-yellow-500">
+                            <div class="text-midnight-green">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-400">"Darrian did an amazing job on my son's hair. He was patient and friendly, and the cut was perfect. We'll definitely be back!"</p>
+                    <p class="text-silver">"Darrian did an amazing job on my son's hair. He was patient and friendly, and the cut was perfect. We'll definitely be back!"</p>
                 </div>
                 <!-- Review Card 3 -->
                 <div class="bg-gray-800 p-6 rounded-lg">
@@ -652,12 +714,12 @@
                         <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Client 3" class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="text-white font-bold">Mike D.</h4>
-                            <div class="text-yellow-500">
+                            <div class="text-midnight-green">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-400">"The hot towel shave is a must-try. Incredibly relaxing and my skin has never felt smoother. A truly premium experience."</p>
+                    <p class="text-silver">"The hot towel shave is a must-try. Incredibly relaxing and my skin has never felt smoother. A truly premium experience."</p>
                 </div>
             </div>
         </div>
@@ -668,38 +730,38 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">GET IN TOUCH</h2>
-                <p class="text-gray-400 text-lg">We're here to answer your questions</p>
+                <p class="text-silver text-lg">We're here to answer your questions</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Contact Info -->
                 <div class="space-y-6">
                     <div class="flex items-start space-x-4">
-                        <i class="fas fa-map-marker-alt text-yellow-500 text-2xl mt-1"></i>
+                        <i class="fas fa-map-marker-alt text-midnight-green text-2xl mt-1"></i>
                         <div>
                             <h3 class="text-white font-bold text-xl">Address</h3>
-                            <p class="text-gray-400">225 Market St, Johnstown, PA 15901</p>
+                            <p class="text-silver">225 Market St, Johnstown, PA 15901</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-4">
-                        <i class="fas fa-phone text-yellow-500 text-2xl mt-1"></i>
+                        <i class="fas fa-phone text-midnight-green text-2xl mt-1"></i>
                         <div>
                             <h3 class="text-white font-bold text-xl">Phone</h3>
-                            <p class="text-gray-400"><a href="tel:8145355110" class="hover:text-yellow-500">(814) 535-5110</a></p>
+                            <p class="text-silver"><a href="tel:8145355110" class="hover:text-midnight-green">(814) 535-5110</a></p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-4">
-                        <i class="fas fa-envelope text-yellow-500 text-2xl mt-1"></i>
+                        <i class="fas fa-envelope text-midnight-green text-2xl mt-1"></i>
                         <div>
                             <h3 class="text-white font-bold text-xl">Email</h3>
-                            <p class="text-gray-400"><a href="mailto:Calvin.Berkins@yahoo.com" class="hover:text-yellow-500">Calvin.Berkins@yahoo.com</a></p>
+                            <p class="text-silver"><a href="mailto:Calvin.Berkins@yahoo.com" class="hover:text-midnight-green">Calvin.Berkins@yahoo.com</a></p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-4">
-                        <i class="fas fa-clock text-yellow-500 text-2xl mt-1"></i>
+                        <i class="fas fa-clock text-midnight-green text-2xl mt-1"></i>
                         <div>
                             <h3 class="text-white font-bold text-xl">Hours</h3>
-                            <p class="text-gray-400">Tuesday - Sunday: 10:00 AM - 5:00 PM ET</p>
-                            <p class="text-gray-400">Monday: Closed</p>
+                            <p class="text-silver">Tuesday - Sunday: 10:00 AM - 5:00 PM ET</p>
+                            <p class="text-silver">Monday: Closed</p>
                         </div>
                     </div>
                 </div>
@@ -713,24 +775,26 @@
 
     <!-- Footer -->
     <footer class="bg-gray-900 py-8">
-        <div class="container mx-auto px-6 text-center text-gray-400">
+        <div class="container mx-auto px-6 text-center text-silver">
             <div class="flex justify-center space-x-6 mb-4">
-                <a href="#" class="hover:text-yellow-500"><i class="fab fa-facebook-f text-2xl"></i></a>
-                <a href="#" class="hover:text-yellow-500"><i class="fab fa-instagram text-2xl"></i></a>
-                <a href="#" class="hover:text-yellow-500"><i class="fab fa-twitter text-2xl"></i></a>
+                <a href="#" class="hover:text-midnight-green"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="hover:text-midnight-green"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="hover:text-midnight-green"><i class="fab fa-twitter text-2xl"></i></a>
             </div>
             <p>&copy; 2024 Shear Magic. All Rights Reserved.</p>
-            <p>Designed by <a href="#" class="text-yellow-500 hover:underline">Sheldon G of Johnstown</a></p>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <div id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Loader
             const loader = document.getElementById('loader');
-            window.addEventListener('load', () => {
-                loader.classList.add('hidden');
-            });
+            loader.classList.add('hidden');
 
             // Navbar scroll effect
             const navbar = document.getElementById('navbar');
@@ -767,6 +831,17 @@
                 document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
             }
 
+            // Smooth scroll for all anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
             // GSAP Animations
             gsap.registerPlugin(ScrollTrigger);
 
@@ -799,8 +874,8 @@
 
             barberButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    barberButtons.forEach(btn => btn.classList.remove('bg-yellow-500', 'text-black'));
-                    button.classList.add('bg-yellow-500', 'text-black');
+                    barberButtons.forEach(btn => btn.classList.remove('bg-midnight-green', 'text-white'));
+                    button.classList.add('bg-midnight-green', 'text-white');
                 });
             });
 
@@ -817,7 +892,153 @@
             const datePicker = document.getElementById('date-select');
             const today = new Date().toISOString().split('T')[0];
             datePicker.setAttribute('min', today);
+
+            // Booking form submission
+            const bookingForm = document.getElementById('booking-form');
+            const bookingConfirmation = document.getElementById('booking-confirmation');
+            bookingForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                bookingConfirmation.classList.remove('hidden');
+                bookingForm.reset();
+                setTimeout(() => {
+                    bookingConfirmation.classList.add('hidden');
+                }, 5000);
+            });
+
+            // Back to Top button
+            const backToTopButton = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            });
+
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Mobile Gallery Carousel
+            const masonryGrid = document.querySelector('.masonry-grid');
+            const carouselInner = document.getElementById('carousel-inner');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (masonryGrid && carouselInner) {
+                const images = masonryGrid.querySelectorAll('img');
+                let currentIndex = 0;
+
+                images.forEach(img => {
+                    const slide = document.createElement('div');
+                    slide.className = 'w-full flex-shrink-0';
+                    const newImg = document.createElement('img');
+                    newImg.src = img.src;
+                    newImg.alt = img.alt;
+                    newImg.className = 'w-full h-full object-cover rounded-lg';
+                    slide.appendChild(newImg);
+                    carouselInner.appendChild(slide);
+                });
+
+                const totalSlides = images.length;
+
+                function updateCarousel() {
+                    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % totalSlides;
+                    updateCarousel();
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                    updateCarousel();
+                });
+
+                // Swipe functionality
+                let touchstartX = 0;
+                let touchendX = 0;
+
+                carouselInner.addEventListener('touchstart', function(event) {
+                    touchstartX = event.changedTouches[0].screenX;
+                }, false);
+
+                carouselInner.addEventListener('touchend', function(event) {
+                    touchendX = event.changedTouches[0].screenX;
+                    handleSwipe();
+                }, false);
+
+                function handleSwipe() {
+                    if (touchendX < touchstartX) { // Swiped left
+                        currentIndex = (currentIndex + 1) % totalSlides;
+                    }
+                    if (touchendX > touchstartX) { // Swiped right
+                        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                    }
+                    updateCarousel();
+                }
+            }
         });
     </script>
 </body>
 </html>
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+<environment_details>
+# VSCode Visible Files
+shear.html
+
+# VSCode Open Tabs
+carousel.js
+carousel.css
+language-toggle.css
+i18n.js
+script.js
+index.html
+responsive.css
+style.css
+shear.html
+website.html
+
+# Current Time
+8/10/2025, 5:01:27 PM (America/New_York, UTC-4:00)
+
+# Context Window Usage
+210,831 / 1,048.576K tokens used (20%)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+<environment_details>
+# VSCode Visible Files
+shear.html
+
+# VSCode Open Tabs
+carousel.js
+carousel.css
+language-toggle.css
+i18n.js
+script.js
+index.html
+responsive.css
+style.css
+shear.html
+website.html
+
+# Current Time
+8/10/2025, 5:02:00 PM (America/New_York, UTC-4:00)
+
+# Context Window Usage
+225,982 / 1,048.576K tokens used (22%)
+
+# Current Mode
+ACT MODE
+</environment_details>

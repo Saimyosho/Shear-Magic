@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shear Magic - Precision Cuts • Timeless Style | Johnstown, PA</title>
+    <meta name="description" content="Johnstown's premier barbershop. Family-operated with pride. Expert cuts, fades, and grooming services. Book online or call (814) 535-5110">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Shear Magic - Precision Cuts • Timeless Style">
+    <meta property="og:description" content="Johnstown's premier barbershop, family-owned and operated. Expert barbers, modern styles, classic service.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shear-magic.com">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --black: #0A0A0A;
+            --dark-gray: #1A1A1A;
+            --light-gray: #F5F5F5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .font-bebas {
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 5px;
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .scissors-loader {
+            width: 60px;
+            height: 60px;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navigation Styles */
+        .nav-fixed {
+            backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.85);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Video Overlay */
+        .hero-overlay {
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+        }
+
+        /* Service Card Hover Effect */
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Booking Calendar Styles */
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:hover:not(.disabled) {
+            background: var(--gold);
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .calendar-day.selected {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .calendar-day.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Time Slot Styles */
+        .time-slot {
+            transition: all 0.2s ease;
+            border: 2px solid #333;
+        }
+
+        .time-slot:hover:not(.booked) {
+            border-color: var(--gold);
+            transform: scale(1.05);
+        }
+
+        .time-slot.selected {
+            background: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+        }
+
+        .time-slot.booked {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Gallery Masonry */
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+            z-index: 10;
+        }
+
+        /* Barber Profile Card */
+        .barber-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            transition: all 0.3s ease;
+        }
+
+        .barber-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Responsive Grid */
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .masonry-grid {
+                column-count: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="scissors-loader">
+            <i class="fas fa-scissors text-5xl text-yellow-500"></i>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-scissors text-yellow-500 text-2xl"></i>
+                    <span class="font-bebas text-2xl text-white">SHEAR MAGIC</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-white hover:text-yellow-500 transition">Home</a>
+                    <a href="#services" class="nav-link text-white hover:text-yellow-500 transition">Services</a>
+                    <a href="#booking" class="nav-link text-white hover:text-yellow-500 transition">Book</a>
+                    <a href="#gallery" class="nav-link text-white hover:text-yellow-500 transition">Gallery</a>
+                    <a href="#barbers" class="nav-link text-white hover:text-yellow-500 transition">Barbers</a>
+                    <a href="#reviews" class="nav-link text-white hover:text-yellow-500 transition">Reviews</a>
+                    <a href="#contact" class="nav-link text-white hover:text-yellow-500 transition">Contact</a>
+                    <button onclick="scrollToBooking()" class="bg-yellow-500 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition">
+                        Book Now
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-80 h-full bg-black z-50 p-8">
+        <button id="close-menu" class="absolute top-6 right-6 text-white">
+            <i class="fas fa-times text-2xl"></i>
+        </button>
+        <div class="mt-16 space-y-6">
+            <a href="#home" class="block text-white text-xl hover:text-yellow-500">Home</a>
+            <a href="#services" class="block text-white text-xl hover:text-yellow-500">Services</a>
+            <a href="#booking" class="block text-white text-xl hover:text-yellow-500">Book</a>
+            <a href="#gallery" class="block text-white text-xl hover:text-yellow-500">Gallery</a>
+            <a href="#barbers" class="block text-white text-xl hover:text-yellow-500">Barbers</a>
+            <a href="#reviews" class="block text-white text-xl hover:text-yellow-500">Reviews</a>
+            <a href="#contact" class="block text-white text-xl hover:text-yellow-500">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1920&h=1080&fit=crop" alt="Barber Shop Interior" class="w-full h-full object-cover">
+            <div class="hero-overlay absolute inset-0"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 text-center px-6">
+            <h1 class="font-bebas text-6xl md:text-8xl text-white mb-4 hero-title">
+                SHEAR MAGIC
+            </h1>
+            <p class="text-xl md:text-2xl text-yellow-500 mb-2 hero-subtitle">
+                Precision Cuts • Timeless Style
+            </p>
+            <p class="text-lg text-gray-300 mb-8 hero-tagline">
+                Johnstown's premier barbershop — family-operated with pride
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="scrollToBooking()" class="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-400 transition transform hover:scale-105">
+                    Book Now
+                </button>
+                <a href="tel:8145355110" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-black transition transform hover:scale-105">
+                    <i class="fas fa-phone mr-2"></i> Call Us
+                </a>
+            </div>
+            <div class="mt-8 bg-black/50 backdrop-blur-sm rounded-full px-6 py-3 inline-block">
+                <p class="text-white">
+                    <i class="fas fa-map-marker-alt text-yellow-500 mr-2"></i>
+                    225 Market St • Tue–Sun 10:00 AM–5:00 PM ET
+                </p>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">OUR SERVICES</h2>
+                <p class="text-gray-400 text-lg">Premium grooming services tailored to your style</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service Cards -->
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Men's Cut</h3>
+                    <p class="text-gray-400 mb-4">Classic and modern styles</p>
+                    <p class="text-2xl font-bold text-yellow-500">$25</p>
+                </div>
+
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Fade</h3>
+                    <p class="text-gray-400 mb-4">Low, Mid, High, or Skin</p>
+                    <p class="text-2xl font-bold text-yellow-500">$30</p>
+                </div>
+
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Beard Trim</h3>
+                    <p class="text-gray-400 mb-4">Shape and style</p>
+                    <p class="text-2xl font-bold text-yellow-500">$20</p>
+                </div>
+
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Hot Towel Shave</h3>
+                    <p class="text-gray-400 mb-4">Traditional luxury shave</p>
+                    <p class="text-2xl font-bold text-yellow-500">$35</p>
+                </div>
+
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Kids' Cut</h3>
+                    <p class="text-gray-400 mb-4">For our younger clients</p>
+                    <p class="text-2xl font-bold text-yellow-500">$18</p>
+                </div>
+
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Designs</h3>
+                    <p class="text-gray-400 mb-4">Custom hair art</p>
+                    <p class="text-2xl font-bold text-yellow-500">$15+</p>
+                </div>
+
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Senior Cuts</h3>
+                    <p class="text-gray-400 mb-4">Special senior pricing</p>
+                    <p class="text-2xl font-bold text-yellow-500">$15</p>
+                </div>
+
+                <div class="service-card rounded-lg p-6 text-center">
+                    <div class="text-4xl text-yellow-500 mb-4">
+                        <i class="fas fa-shower"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Wash & Style</h3>
+                    <p class="text-gray-400 mb-4">Complete hair treatment</p>
+                    <p class="text-2xl font-bold text-yellow-500">$40</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-10">
+                <button onclick="scrollToBooking()" class="bg-yellow-500 text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-400 transition transform hover:scale-105">
+                    Book Your Style Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">BOOK YOUR APPOINTMENT</h2>
+                <p class="text-gray-400 text-lg">Select your service, barber, and preferred time</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-gray-900 rounded-2xl p-8">
+                <!-- Booking Form -->
+                <form id="booking-form" class="space-y-6">
+                    <!-- Service Selection -->
+                    <div>
+                        <label class="block text-white mb-2 font-semibold">Select Service</label>
+                        <select id="service-select" class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                            <option value="">Choose a service...</option>
+                            <option value="mens-cut">Men's Cut - $25</option>
+                            <option value="fade">Fade - $30</option>
+                            <option value="beard-trim">Beard Trim - $20</option>
+                            <option value="hot-shave">Hot Towel Shave - $35</option>
+                            <option value="kids-cut">Kids' Cut - $18</option>
+                            <option value="designs">Designs - $15+</option>
+                            <option value="senior-cut">Senior Cut - $15</option>
+                            <option value="wash-style">Wash & Style - $40</option>
+                        </select>
+                    </div>
+
+                    <!-- Barber Selection -->
+                    <div>
+                        <label class="block text-white mb-2 font-semibold">Select Barber</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button type="button" class="barber-select bg-gray-800 text-white px-4 py-3 rounded-lg hover:bg-yellow-500 hover:text-black transition" data-barber="calvin">
+                                Calvin Berkins
+                            </button>
+                            <button type="button" class="barber-select bg-gray-800 text-white px-4 py-3 rounded-lg hover:bg-yellow-500 hover:text-black transition" data-barber="darrian">
+                                Darrian Berkins
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Date Selection -->
+                    <div>
+                        <label class="block text-white mb-2 font-semibold">Select Date</label>
+                        <input type="date" id="date-select" class="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    </div>
+
+                    <!-- Time Selection -->
+                    <div>
+                        <label class="block text-white mb-2 font-semibold">Select Time</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">10:00 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">10:30 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">11:00 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">11:30 AM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">12:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">12:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">1:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">1:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">2:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">2:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">3:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">3:30 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">4:00 PM</button>
+                            <button type="button" class="time-slot px-3 py-2 rounded-lg text-white hover:bg-yellow-500 hover:text-black">4:30 PM</button>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" placeholder="First Name" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                        <input type="text" placeholder="Last Name" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                        <input type="email" placeholder="Email" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                        <input type="tel" placeholder="Phone" class="bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-yellow-500 text-black py-4 rounded-lg font-bold text-lg hover:bg-yellow-400 transition transform hover:scale-105">
+                        Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">OUR WORK</h2>
+                <p class="text-gray-400 text-lg">Check out our latest cuts and styles</p>
+            </div>
+
+            <div class="masonry-grid">
+                <!-- Gallery Items -->
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/9CnW3Mm/59634476-2283314805089352-2485392605194485760-n.jpg" alt="Haircut 1" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/whbqScJf/80389842-2772083579545803-7658129857900969984-n.jpg" alt="Haircut 2" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/jkt8Zqzx/81671715-2816070745147086-2635272335166275584-n.jpg" alt="Haircut 3" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/CK8sTpW8/82072292-2829852320435595-8199256214907912192-n.jpg" alt="Haircut 4" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/ym9fsv5T/484847135-9635499473204145-197261023411486849-n.jpg" alt="Haircut 5" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/GQKwrHmJ/485308118-9635499236537502-2683656992049532177-n.jpg" alt="Haircut 6" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/nMhFB12Z/486109802-9649559625131463-2014667653509757611-n.jpg" alt="Haircut 7" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/vx0rRNbs/488935383-9741117382642353-6471222776232243202-n.jpg" alt="Haircut 8" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/4g2SxKVq/489889964-9768806093206815-1129130192247202795-n.jpg" alt="Haircut 9" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/nsBG7Ncr/489913842-9768843876536370-5809269190867270747-n.jpg" alt="Haircut 10" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/PGm1BKBR/489952720-9773965762690848-5229608896689363537-n.jpg" alt="Haircut 11" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/k2GyzGDT/490685788-9788843151203109-401573085015772538-n.jpg" alt="Haircut 12" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/ymHcgpmq/490697202-9778008098953281-7407137907585686206-n.jpg" alt="Haircut 13" class="w-full rounded-lg">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.ibb.co/0j664Prj/493513553-9875837869170303-517477888537851410-n.jpg" alt="Haircut 14" class="w-full rounded-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Barbers Section -->
+    <section id="barbers" class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">MEET YOUR BARBERS</h2>
+                <p class="text-gray-400 text-lg">Skilled professionals dedicated to your style</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Calvin Berkins -->
+                <div class="barber-card rounded-lg overflow-hidden">
+                    <img src="https://i.ibb.co/1tCHNHp3/482249153-9566035180150575-8168813732127006603-n.jpg" alt="Calvin Berkins" class="w-full h-80 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Calvin Berkins</h3>
+                        <p class="text-yellow-500 mb-4">Co-Owner & Master Barber</p>
+                        <p class="text-gray-400 mb-4">With over 15 years of experience, Calvin specializes in precision fades, classic cuts, and intricate designs. His attention to detail and warm personality keep clients coming back.</p>
+                        <div class="flex items-center space-x-4 text-gray-300">
+                            <span><i class="fas fa-award text-yellow-500 mr-1"></i> 15+ Years</span>
+                            <span><i class="fas fa-star text-yellow-500 mr-1"></i> Fades & Designs</span>
+                        </div>
+                        <div class="mt-4">
+                            <a href="mailto:Calvin.Berkins@yahoo.com" class="text-yellow-500 hover:underline"><i class="fas fa-envelope mr-2"></i>Calvin.Berkins@yahoo.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Darrian Berkins -->
+                <div class="barber-card rounded-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop" alt="Darrian Berkins" class="w-full h-80 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">Darrian Berkins</h3>
+                        <p class="text-yellow-500 mb-4">Co-Owner & Master Barber</p>
+                        <p class="text-gray-400 mb-4">Darrian brings modern techniques and creative flair to every cut. Specializing in contemporary styles and beard grooming, he ensures every client leaves looking their best.</p>
+                        <div class="flex items-center space-x-4 text-gray-300">
+                            <span><i class="fas fa-award text-yellow-500 mr-1"></i> 10+ Years</span>
+                            <span><i class="fas fa-star text-yellow-500 mr-1"></i> Modern Styles</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">WHAT OUR CLIENTS SAY</h2>
+                <p class="text-gray-400 text-lg">Real words from satisfied customers</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Review Card 1 -->
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client 1" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="text-white font-bold">James T.</h4>
+                            <div class="text-yellow-500">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400">"Best haircut I've had in years. Calvin is a true artist. The shop is clean, the vibe is great, and the service is top-notch. Highly recommend!"</p>
+                </div>
+                <!-- Review Card 2 -->
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client 2" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="text-white font-bold">Sarah L.</h4>
+                            <div class="text-yellow-500">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400">"Darrian did an amazing job on my son's hair. He was patient and friendly, and the cut was perfect. We'll definitely be back!"</p>
+                </div>
+                <!-- Review Card 3 -->
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Client 3" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="text-white font-bold">Mike D.</h4>
+                            <div class="text-yellow-500">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400">"The hot towel shave is a must-try. Incredibly relaxing and my skin has never felt smoother. A truly premium experience."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-bebas text-5xl md:text-6xl text-white mb-4">GET IN TOUCH</h2>
+                <p class="text-gray-400 text-lg">We're here to answer your questions</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Contact Info -->
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-map-marker-alt text-yellow-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-white font-bold text-xl">Address</h3>
+                            <p class="text-gray-400">225 Market St, Johnstown, PA 15901</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-phone text-yellow-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-white font-bold text-xl">Phone</h3>
+                            <p class="text-gray-400"><a href="tel:8145355110" class="hover:text-yellow-500">(814) 535-5110</a></p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-envelope text-yellow-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-white font-bold text-xl">Email</h3>
+                            <p class="text-gray-400"><a href="mailto:Calvin.Berkins@yahoo.com" class="hover:text-yellow-500">Calvin.Berkins@yahoo.com</a></p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-clock text-yellow-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-white font-bold text-xl">Hours</h3>
+                            <p class="text-gray-400">Tuesday - Sunday: 10:00 AM - 5:00 PM ET</p>
+                            <p class="text-gray-400">Monday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Map -->
+                <div>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3049.234847529261!2d-78.9221936846112!3d40.3233149793768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89cb98d8f1b4169d%3A0x1f6e46f665e57e0!2s225%20Market%20St%2C%20Johnstown%2C%20PA%2015901!5e0!3m2!1sen!2sus!4v1678886400000!5m2!1sen!2sus" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-lg"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="hover:text-yellow-500"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="hover:text-yellow-500"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="hover:text-yellow-500"><i class="fab fa-twitter text-2xl"></i></a>
+            </div>
+            <p>&copy; 2024 Shear Magic. All Rights Reserved.</p>
+            <p>Designed by <a href="#" class="text-yellow-500 hover:underline">Sheldon G of Johnstown</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Loader
+            const loader = document.getElementById('loader');
+            window.addEventListener('load', () => {
+                loader.classList.add('hidden');
+            });
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('nav-fixed');
+                } else {
+                    navbar.classList.remove('nav-fixed');
+                }
+            });
+
+            // Mobile Menu
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const closeMenuBtn = document.getElementById('close-menu');
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+            });
+
+            closeMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+
+            // Smooth scroll for booking button
+            window.scrollToBooking = function() {
+                document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero animation
+            gsap.from('.hero-title', { duration: 1, y: 50, opacity: 0, ease: 'power3.out', delay: 0.5 });
+            gsap.from('.hero-subtitle', { duration: 1, y: 50, opacity: 0, ease: 'power3.out', delay: 0.7 });
+            gsap.from('.hero-tagline', { duration: 1, y: 50, opacity: 0, ease: 'power3.out', delay: 0.9 });
+            gsap.from('.hero-buttons', { duration: 1, y: 50, opacity: 0, ease: 'power3.out', delay: 1.1 });
+
+            // Section fade-in animations
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                gsap.from(section.querySelectorAll('.fade-in-up'), {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    stagger: 0.2,
+                    ease: 'power3.out'
+                });
+            });
+            
+            // Booking form logic
+            const barberButtons = document.querySelectorAll('.barber-select');
+            const timeSlots = document.querySelectorAll('.time-slot');
+
+            barberButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    barberButtons.forEach(btn => btn.classList.remove('bg-yellow-500', 'text-black'));
+                    button.classList.add('bg-yellow-500', 'text-black');
+                });
+            });
+
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', () => {
+                    if (!slot.classList.contains('booked')) {
+                        timeSlots.forEach(s => s.classList.remove('selected'));
+                        slot.classList.add('selected');
+                    }
+                });
+            });
+
+            // Date picker min date
+            const datePicker = document.getElementById('date-select');
+            const today = new Date().toISOString().split('T')[0];
+            datePicker.setAttribute('min', today);
+        });
+    </script>
+</body>
+</html>
